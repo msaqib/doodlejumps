@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import {App} from '../system/App.js'
+import * as Matter from 'matter-js'
 
 export class Hero {
     constructor(x, y) {
@@ -30,16 +31,16 @@ export class Hero {
         this.sprite.y = this.y
     }
 
-    // createBody() {
-    //     this.body = Matter.Bodies.rectangle(this.x + this.sprite.width / 2, this.y + this.sprite.height / 2, this.sprite.width, this.sprite.height, {friction: 0})
-    //     Matter.World.add(App.physics.world, this.body)
-    //     this.body.gameHero = this
-    // }
+    createBody() {
+        this.body = Matter.Bodies.rectangle(this.x + this.sprite.width / 2, this.y + this.sprite.height / 2, this.sprite.width, this.sprite.height, {friction: 0})
+        Matter.World.add(App.physics.world, this.body)
+        this.body.gameHero = this
+    }
 
-    // update(dt) {
-    //     this.sprite.x = this.body.position.x - this.sprite.width / 2
-    //     this.sprite.y = this.body.position.y - this.sprite.height / 2
-    // }
+    update(dt) {
+        this.sprite.x = this.body.position.x - this.sprite.width / 2
+        this.sprite.y = this.body.position.y - this.sprite.height / 2
+    }
 
     // startJump() {
     //     Matter.Body.setVelocity(this.body, {x: 0, y: -this.vy})
