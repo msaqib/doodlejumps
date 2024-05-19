@@ -8,5 +8,12 @@ export const Config = {
     scenes: {
         "Game": GameScene,
         "startScene": Game
+    },
+    screen: {
+        width: 300,
+        height: 600
+    },
+    hero: {
+        velocity: 10
     }
 }
