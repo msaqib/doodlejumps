@@ -13,7 +13,7 @@ export class Hero {
         const atlasData = {
             frames: {
                 straight: {
-                    frame: { x: 30, y:50, w:70, h:78 },
+                    frame: { x: 35, y:50, w:45, h:78 },
                 },
             },
             meta: {
