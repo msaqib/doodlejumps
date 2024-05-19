@@ -42,7 +42,7 @@ export class Hero {
         this.sprite.y = this.body.position.y - this.sprite.height / 2
     }
 
-    // startJump() {
-    //     Matter.Body.setVelocity(this.body, {x: 0, y: -this.vy})
-    // }
+    startJump() {
+        Matter.Body.setVelocity(this.body, {x: 0, y: -this.vy})
+    }
 }

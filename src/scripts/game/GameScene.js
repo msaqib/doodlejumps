@@ -19,11 +19,11 @@ export class GameScene extends Scene {
         await this.hero.createSprite()
         this.hero.createBody()
         this.container.addChild(this.hero.sprite)
+        this.hero.startJump()
     }
 
     update(dt) {
         super.update(dt)
         this.hero.update(dt)
-        // /this.bg.update(dt.deltaTime);
     }
 }
