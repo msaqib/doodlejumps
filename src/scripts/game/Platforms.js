@@ -6,11 +6,11 @@ export class Platforms {
     }
 
     createPlatforms() {
-        const numPlatforms = 1
+        const numPlatforms = 2
         for (let i = 0 ; i < numPlatforms ; i++) {
-            const x = 115
+            const x = 130
             const y = 450
-            this.platforms.push(this.createPlatform(x, y))
+            this.platforms.push(this.createPlatform(x, y-100*i ))
         }
     }
 
