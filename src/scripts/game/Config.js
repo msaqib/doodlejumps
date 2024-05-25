@@ -14,6 +14,19 @@ export const Config = {
         height: 600
     },
     hero: {
-        velocity: 10
+        velocity: 10,
+        velocityx: 5
+    },
+    platforms: {
+        distance: {
+            y: {
+                min: 70,
+                max: 90
+            },
+            x: {
+                min: 40,
+                max: 120
+            }
+        }
     }
 }

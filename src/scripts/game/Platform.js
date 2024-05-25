@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js'
 import { App } from '../system/App'
-// import * as Matter from 'matter-js'
 import { MatterUtil } from './MatterUtil'
 
 export class Platform {
@@ -22,5 +21,9 @@ export class Platform {
 
     update(dt) {
         this.sprite.y = this.body.position.y
+    }
+
+    destroy() {
+        this.sprite.visible = false
     }
 }
