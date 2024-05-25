@@ -6,7 +6,7 @@ export class Platforms {
     }
 
     createPlatforms() {
-        const numPlatforms = 2
+        const numPlatforms = 3
         for (let i = 0 ; i < numPlatforms ; i++) {
             const x = 130
             const y = 450
@@ -16,5 +16,9 @@ export class Platforms {
 
     createPlatform(x, y) {
         return new Platform(x, y)
+    }
+
+    update(dt) {
+        this.platforms.forEach(platform => platform.update(dt))
     }
 }
