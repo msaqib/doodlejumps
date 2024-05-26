@@ -5,13 +5,24 @@ import { App } from "../system/App";
 import { Platforms } from "./Platforms";
 import * as Matter from 'matter-js'
 import { Tools } from "../system/Tools";
+import { Stats } from "./Stats";
+import { Hud } from "./Hud";
 
 export class GameScene extends Scene {
     create() {
+        this.stats = new Stats()
         this.createBackground();
-        this.createHero(App.config.screen.width / 2, App.config.screen.height * 3 / 4)
+        this.createHero(App.config.screen.width / 2, App.config.screen.height * 3 / 4 - 100)
         this.createPlatforms()
         this.registerEvents()
+        this.createHud()
+        this.currentPlatform = null
+        this.collisionHandler = this.onCollisionStart.bind(this)
+    }
+
+    createHud() {
+        this.hud = new Hud(this.stats.livesRemaining, this.stats.score)
+        this.container.addChild(this.hud.container)
     }
 
     createBackground() {
@@ -24,6 +35,20 @@ export class GameScene extends Scene {
         await this.hero.createSprite()
         this.hero.sprite.zIndex = 10
         this.hero.createBody()
+        this.hero.sprite.once('die', () => {
+            App.app.ticker.remove(this.update, this)
+            this.unRegisterEvents()
+            this.platforms.destroy()
+            Matter.World.remove(App.physics.world, this.hero.body)
+            this.currentPlatform = null
+            this.stats.livesRemaining--
+            if (this.stats.livesRemaining > 0) {
+                App.scenes.start('Game')
+            }
+            else {
+                App.scenes.start('GameOver')
+            }
+        })
         const right = Tools.keyboard('ArrowRight')
         right.press = this.hero.moveRight.bind(this.hero)
         right.release = this.hero.straighten.bind(this.hero)
@@ -45,14 +70,24 @@ export class GameScene extends Scene {
     }
 
     registerEvents() {
-        Matter.Events.on(App.physics, 'collisionStart', this.onCollisionStart.bind(this))
+        this.boundCollisionHandler = this.onCollisionStart.bind(this)
+        Matter.Events.on(App.physics, 'collisionStart', this.boundCollisionHandler)
+    }
+
+    unRegisterEvents() {
+        Matter.Events.off(App.physics, 'collisionStart', this.boundCollisionHandler)
     }
 
     onCollisionStart(event) {
         const colliders = [event.pairs[0].bodyA, event.pairs[0].bodyB]
         const hero = colliders.find((body) => body.gameHero)
         const platform = colliders.find((body) => body.gamePlatform)
-        if (hero && platform && this.hero.body.velocity.y >= 0) {
+        if (hero && platform && hero.velocity.y >= 0 && hero.gameHero.sprite.y <= platform.gamePlatform.sprite.y) {
+            if (!this.currentPlatform || (this.currentPlatform !== platform && this.currentPlatform.gamePlatform.sprite.y > platform.gamePlatform.sprite.y)) {
+                this.currentPlatform = platform
+                this.stats.score += 100
+                this.hud.update(this.stats.score)
+            }
             this.hero.startJump()
         }
     }
@@ -66,10 +101,6 @@ export class GameScene extends Scene {
                 Matter.Body.translate(body, {x: 0, y: -this.hero.body.velocity.y / dt.deltaTime})
             })
         }
-        // if (this.platforms.platforms[this.platforms.platforms.length - 1].sprite.y > App.config.platforms.distance.max) {
-        //     this.platforms.platforms.push(this.platforms.createPlatform(Math.random()*App.config.screen.width, Math.random()*(App.config.platforms.distance.max - App.config.platforms.distance.min) + App.config.platforms.distance.min))
-        //     this.container.addChild(this.platforms.platforms[this.platforms.platforms.length - 1].sprite)
-        // }
     }
 
     addPlatform(platform) {

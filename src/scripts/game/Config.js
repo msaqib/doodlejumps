@@ -1,13 +1,15 @@
 import { Tools } from "../system/Tools";
 import { GameScene } from "./GameScene";
 import { Game } from "./Game";
+import { GameOver } from "./GameOver";
 
 export const Config = {
     loader: Tools.importAll(require.context('./../../sprites', true, /\.(png|mp3)$/)),
     bgSpeed: 2,
     scenes: {
         "Game": GameScene,
-        "startScene": Game
+        "startScene": Game,
+        "GameOver": GameOver
     },
     screen: {
         width: 300,
@@ -15,7 +17,8 @@ export const Config = {
     },
     hero: {
         velocity: 10,
-        velocityx: 5
+        velocityx: 5,
+        lives: 3
     },
     platforms: {
         distance: {

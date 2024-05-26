@@ -19,7 +19,7 @@ export class Hero {
                 },
             },
             meta: {
-                image: '../sprites/Jump.png',
+                image: '../sprites/Drawing.png',
                 format: 'RGBA8888',
                 size: { w: 1408, h: 128 },
                 scale: 1
@@ -49,6 +49,9 @@ export class Hero {
         }
         this.sprite.x = this.body.position.x - this.sprite.width / 2
         this.sprite.y = this.body.position.y - this.sprite.height / 2
+        if (this.sprite.y > App.config.screen.height) {
+            this.sprite.emit('die')
+        }
     }
 
     startJump() {

@@ -14,7 +14,7 @@ export class Platforms {
         while(y >= App.config.platforms.distance.y.min) {
             this.platforms.push(this.createPlatform(x, y))
             y = y - (Math.random()*(App.config.platforms.distance.y.max - App.config.platforms.distance.y.min) + App.config.platforms.distance.y.min)
-            const xOffset = Math.random() * (App.config.platforms.distance.x.max - App.config.platforms.distance.x.min) + App.config.platforms.distance.x.min//Math.random() * x 
+            const xOffset = Math.random() * (App.config.platforms.distance.x.max - App.config.platforms.distance.x.min) + App.config.platforms.distance.x.min
             if (x > App.config.screen.width / 2) {
                 x = Math.max(x - xOffset, 0)
             }
@@ -51,7 +51,13 @@ export class Platforms {
             this.platforms[gone].destroy()
             Matter.World.remove(App.physics.world, this.platforms[gone].body)
             this.platforms.splice(gone, 1)
-            // this.platforms[gone].sprite.emit('gone', gone)
         }
+    }
+
+    destroy() {
+        this.platforms.forEach(platform => {
+            Matter.World.remove(App.physics.world, platform.body)
+            platform.destroy()
+        })
     }
 }
